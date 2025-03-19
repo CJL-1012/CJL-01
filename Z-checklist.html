@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CheckList</title>
+    <style>
+      .background {
+        background-image: url("../IMG/diqiu.jpg");
+        background-size: cover; /* 适应背景尺寸 */
+        background-position: center; /* 居中显示背景图片 */
+        height: 90vh; /* 100vh由于网页窗口的原因，会有滚动条 */
+        opacity: 1;
+        z-index: -1;
+      }
+      .flexCENTER {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .flex {
+        display: flex;
+        justify-content: center;
+      }
+      #shuru {
+        border: 0;
+        outline: none;
+        height: 100px;
+        background-color: transparent;
+        z-index: 1;
+        width: 80%;
+        text-align: center;
+        color: white;
+
+        font-size: 18px;
+        font-weight: 800;
+        font-family: Microsoft YaHei;
+      }
+      #queren {
+        margin-left: -5x;
+        color: gold;
+        font-weight: 600;
+        z-index: 0;
+      }
+    </style>
+  </head>
+
+  <body class="background">
+    <h1 class="flex" style="margin-top: 0; color: rgb(145, 124, 2)">
+      <b>Check List</b>
+    </h1>
+    <div class="flexCENTER" style="height: 75vh; flex-direction: column">
+      <input id="shuru" placeholder="请输入" />
+      <!--input 不要放在div里，div有内外边距的限制，会限制input的边框大小-->
+      <div style="margin-top: 20px">
+        <span id="queren" onclick="change1()">确 认</span>
+        <!--span 用于对文档中的行内元素进行组合。-->
+      </div>
+    </div>
+    <script>
+      <!--隐式逻辑：有内容就默认是true，有内置的几个元素是默认false-->
+      let youneirong = false;
+      function change1() {
+        let shuru = document.getElementById("shuru");
+        let queren = document.getElementById("queren");
+
+        if (youneirong) {
+          youneirong = false;
+          queren.innerText = "确 认";
+          shuru.value = "";
+          shuru.readOnly = false;
+          <!--remove 获取数据，删除数据项“shi” ;-->
+          window.localStorage.removeItem("shi");
+        } else {
+          <!--youneirong初始值为false，运行else后被赋值为 true-->
+          youneirong = true;
+          queren.innerText = "删 除";
+          <!--readOnly （注意大小写！！）属性使得 输入框无法再次编辑-->·
+          shuru.readOnly = true;
+          <!--set 获取数据值保存到数据项“shi”-->
+          window.localStorage.setItem("shi", shuru.value);
+        }
+        <!--BUG:没有内容，点击还是会切换确认和删除-->
+      }
+      <!--打开浏览器时，查询localStorage 数据项“shi”，输出数据到输入框-->
+      let data = window.localStorage.getItem("shi");
+      if (data) {
+        document.getElementById("shuru").value = data;
+        change1();
+      }
+    </script>
+  </body>
+</html>
